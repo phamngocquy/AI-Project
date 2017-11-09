@@ -1,4 +1,4 @@
-package com.pnq.aiprocon.model;
+package com.pnq.aiprocon.helper;
 
 import java.awt.*;
 

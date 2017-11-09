@@ -1,5 +1,7 @@
 package com.pnq.aiprocon.model;
 
+import com.pnq.aiprocon.helper.PolygonHelper;
+
 import java.awt.*;
 
 public class PolygonImpl extends Polygon {
