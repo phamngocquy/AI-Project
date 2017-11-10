@@ -20,6 +20,11 @@ public class EvaluateObject {
         this.numOfRotate = numOfRotate;
     }
 
+    public EvaluateObject(PolygonImpl polygon1, PolygonImpl polygon2) {
+        this.polygon1 = polygon1;
+        this.polygon2 = polygon2;
+    }
+
     public double getMark() {
         return mark;
     }
