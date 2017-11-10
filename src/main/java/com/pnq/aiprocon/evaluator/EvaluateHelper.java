@@ -50,7 +50,7 @@ public class EvaluateHelper {
 
             // tinh diem cua hinh1,goc pos1, voi hinh2(moi),goc pos2
             // hai hinh da duoc ghep
-            double mark = generateMark(polygon1, pos1, polygon, pos2);
+            double mark = generateMark(polygon1, pos1, polygon, pos2, i);
 
 
             // lay diem lon nhat, tra ve so lan quay
@@ -63,14 +63,135 @@ public class EvaluateHelper {
         return evaluateObject;
     }
 
-    private double generateMark(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2) {
+    public double generateMark(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2, int flip) {
 
         // pos1 : vi tri goc duoc ghep cua polygon 1
         // pos2 :  vi tri goc duoc ghep cua polygon 2
         // todo [Namdv] viet ham tinh diem phu hop 2 polygon (2 polygon da duoc ghep,)
+        double mark = 0;
+        //tinh diem theo goc
+        //neu 2 goc xap xi bang nhau thi se cong 50 diem,
+        //con lai se tinh theo cong thuc mark = 50 * (goc nho/ goc lon)
+        if((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2])<=360 ){
+            if((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
+                    ||(polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <=360){
+                mark += 50;
+            }else {
+                if(polygon1.getVertices()[pos1]<= polygon2.getVertices()[pos2] ) {
+                    mark += 50 * (1 - polygon1.getVertices()[pos1] / polygon2.getVertices()[pos2]);
+                } else {
+                    mark += 50 * (1 - polygon2.getVertices()[pos2] / polygon1.getVertices()[pos1]);
+                }
+            }
+            // tinh diem theo canh
+            if(flip == 1 || flip ==2 || flip== 3){
+                if(pos1 == 0 && pos2 != 0 ){
+                    if(polygon1.getEdges()[pos1] >=  polygon2.getEdges()[pos2-1]){
+                        mark +=25 * (polygon2.getEdges()[pos2-1] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2-1]);
+                    }
 
+                    if(polygon1.getEdges()[polygon1.getEdges().length -1] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[polygon1.getEdges().length -1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[polygon1.getEdges().length -1] / polygon2.getEdges()[pos2]);
+                    }
+                } else if(pos1 == 0 && pos2 == 0){
+                    if(polygon1.getEdges()[pos1] >= polygon2.getEdges()[polygon2.getEdges().length -1]){
+                        mark +=25 * (polygon2.getEdges()[polygon2.getEdges().length -1] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[polygon2.getEdges().length -1]);
+                    }
 
-        return 0;
+                    if(polygon1.getEdges()[polygon1.getEdges().length -1 ] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[polygon1.getEdges().length -1 ]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[polygon1.getEdges().length -1] / polygon2.getEdges()[pos2]);
+                    }
+                } else if(pos1 != 0 && pos2 == 0){
+                    if(polygon1.getEdges()[pos1] >=  polygon2.getEdges()[polygon2.getEdges().length-1]){
+                        mark +=25 * (polygon2.getEdges()[polygon2.getEdges().length-1] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[polygon2.getEdges().length-1]);
+                    }
+
+                    if(polygon1.getEdges()[pos1-1] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1-1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1 -1] / polygon2.getEdges()[pos2]);
+                    }
+                } else if(pos1 !=0 && pos2 !=0){
+                    if(polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2-1]){
+                        mark +=25 * (polygon2.getEdges()[pos2-1] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2-1]);
+                    }
+
+                    if(polygon1.getEdges()[pos1-1] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1-1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1 -1] / polygon2.getEdges()[pos2]);
+                    }
+
+                }
+            } else if( flip == 4 || flip ==5 ||flip == 6 || flip == 7){
+                if(pos1 == 0 && pos2 != 0 ){
+                    if(polygon1.getEdges()[pos1] >=  polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2]);
+                    }
+
+                    if(polygon1.getEdges()[polygon1.getEdges().length -1] >= polygon2.getEdges()[pos2-1]){
+                        mark +=25 * (polygon2.getEdges()[pos2-1] / polygon1.getEdges()[polygon1.getEdges().length -1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[polygon1.getEdges().length -1] / polygon2.getEdges()[pos2-1]);
+                    }
+                } else if(pos1 == 0 && pos2 == 0){
+                    if(polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2]);
+                    }
+
+                    if(polygon1.getEdges()[polygon1.getEdges().length -1 ] >= polygon2.getEdges()[polygon2.getEdges().length]){
+                        mark +=25 * (polygon2.getEdges()[polygon2.getEdges().length -1] / polygon1.getEdges()[polygon1.getEdges().length -1 ]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[polygon1.getEdges().length -1] / polygon2.getEdges()[polygon2.getEdges().length -1]);
+                    }
+                } else if(pos1 != 0 && pos2 == 0){
+                    if(polygon1.getEdges()[pos1-1] >=  polygon2.getEdges()[polygon2.getEdges().length-1]){
+                        mark +=25 * (polygon2.getEdges()[polygon2.getEdges().length-1] / polygon1.getEdges()[pos1-1]);
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1 -1] / polygon2.getEdges()[polygon2.getEdges().length-1]);
+                    }
+
+                    if(polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2]);
+                    }
+                } else if(pos1 != 0 && pos2 !=0){
+                    if(polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]){
+                        mark +=25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1]);
+                    }else {
+                        mark +=25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2]);
+                    }
+
+                    if(polygon1.getEdges()[pos1-1] >= polygon2.getEdges()[pos2-1]){
+                        mark +=25 * (polygon2.getEdges()[pos2 -1] / polygon1.getEdges()[pos1-1]);
+                    } else {
+                        mark +=25 * (polygon1.getEdges()[pos1 -1] / polygon2.getEdges()[pos2-1]);
+                    }
+                }
+            }
+
+        } else {
+            // todo: hai hinh de nhau
+        }
+
+        return mark;
     }
 
 }

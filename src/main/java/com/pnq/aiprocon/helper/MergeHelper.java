@@ -62,7 +62,7 @@ public class MergeHelper {
     public static void main(String[] args) {
         ReadFileHelper readFileHelper = new ReadFileHelper();
 
-        String filePath = "/home/javis/Desktop/procon_input.txt";
+        String filePath = "C:\\Users\\Capricorn.uet\\Desktop\\input.txt";
         java.util.List polygons = readFileHelper.readFile(filePath);
         //System.out.println(Integer.MA);
         // render
@@ -70,9 +70,9 @@ public class MergeHelper {
 
         List polygon_tmp = new ArrayList();
         polygon_tmp.add(polygons.get(0));
-        //  polygon_tmp.add(polygons.get(1));
-        polygon_tmp.add(polygons.get(2));
-        polygon_tmp.add(mapP2toP1(polygons.get(0), 3, polygons.get(2), 1, 8));
+        polygon_tmp.add(polygons.get(1));
+       // polygon_tmp.add(polygons.get(2));
+        //polygon_tmp.add(mapP2toP1(polygons.get(0), 3, polygons.get(2), 1, 8));
       /*  PolygonImpl polygonImpl = ((PolygonImpl) polygons.get(0)).move(0, 20);
         polygon_tmp.add(polygonImpl);
         PolygonImpl polygonImpl2 = ((PolygonImpl) polygons.get(0)).flipOx().move(0, 40);

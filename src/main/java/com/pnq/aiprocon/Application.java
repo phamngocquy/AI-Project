@@ -1,5 +1,7 @@
 package com.pnq.aiprocon;
 
+import com.pnq.aiprocon.evaluator.EvaluateHelper;
+import com.pnq.aiprocon.helper.MergeHelper;
 import com.pnq.aiprocon.helper.ReadFileHelper;
 import com.pnq.aiprocon.model.PolygonImpl;
 
@@ -22,14 +24,12 @@ public class Application {
             System.out.println(polygon.getVertices()[i]);
             System.out.println("====================");
         }*/
-        for(int i=0; i< polygons.size(); i++){
-            PolygonImpl polygon = (PolygonImpl) polygons.get(i);
-            for (int j=0;j<polygon.xpoints.length;j++)
-            {
-                System.out.println(polygon.getEdges()[j]);
-                System.out.println(polygon.getVertices()[j]);
-                System.out.println("====================");
-            }
-        }
+
+        EvaluateHelper helper = new EvaluateHelper();
+        double a =  helper.generateMark((PolygonImpl) polygons.get(0), 1, (PolygonImpl) polygons.get(1) , 3, 1);
+        System.out.println(a);
+        System.out.println(((PolygonImpl) polygons.get(0)).getEdges().length);
+
+
     }
 }
