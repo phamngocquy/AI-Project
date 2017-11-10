@@ -54,7 +54,7 @@ public class ReadFileHelper {
     public static void main(String[] args) {
         ReadFileHelper readFileHelper = new ReadFileHelper();
 
-        String filePath = "D:\\DKNghia\\AI\\input.txt";
+        String filePath = "C:\\Users\\Capricorn.uet\\Desktop\\input.txt";
         List polygons = readFileHelper.readFile(filePath);
         // render
         DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
