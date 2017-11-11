@@ -1,13 +1,10 @@
 package com.pnq.aiprocon.evaluator;
 
-import com.pnq.aiprocon.helper.MergeHelper;
+import com.pnq.aiprocon.helper.MergePolygon;
 import com.pnq.aiprocon.model.EvaluateObject;
 import com.pnq.aiprocon.model.PolygonImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class EvaluateHelper {
+public class EvaluatePolygon {
 
     public EvaluateObject execEvaluate(PolygonImpl polygon1, PolygonImpl polygon2) {
 
@@ -46,7 +43,7 @@ public class EvaluateHelper {
         // xoay thu tu 1 - 7 lan, tra ve hinh da ghep
         for (int i = 1; i <= 7; i++) {
             // polygon thu 2 sau khi da ghep
-            PolygonImpl polygon = MergeHelper.mapP2toP1(polygon1, pos1, polygon2, pos2, i);
+            PolygonImpl polygon = MergePolygon.mapP2toP1(polygon1, pos1, polygon2, pos2, i);
 
             // tinh diem cua hinh1,goc pos1, voi hinh2(moi),goc pos2
             // hai hinh da duoc ghep

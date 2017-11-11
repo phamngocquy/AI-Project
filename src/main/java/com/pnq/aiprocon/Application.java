@@ -1,11 +1,9 @@
 package com.pnq.aiprocon;
 
-import com.pnq.aiprocon.evaluator.EvaluateHelper;
-import com.pnq.aiprocon.helper.MergeHelper;
+import com.pnq.aiprocon.evaluator.EvaluatePolygon;
 import com.pnq.aiprocon.helper.ReadFileHelper;
 import com.pnq.aiprocon.model.PolygonImpl;
 
-import java.awt.*;
 import java.util.List;
 
 public class Application {
@@ -25,7 +23,7 @@ public class Application {
             System.out.println("====================");
         }*/
 
-        EvaluateHelper helper = new EvaluateHelper();
+        EvaluatePolygon helper = new EvaluatePolygon();
         double a =  helper.generateMark((PolygonImpl) polygons.get(0), 1, (PolygonImpl) polygons.get(1) , 3, 1);
         System.out.println(a);
         System.out.println(((PolygonImpl) polygons.get(0)).getEdges().length);
