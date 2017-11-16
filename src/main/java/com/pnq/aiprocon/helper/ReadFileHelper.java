@@ -60,12 +60,15 @@ public class ReadFileHelper {
         DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
         PolygonImpl polygonImpl = ((PolygonImpl) polygons.get(0)).move(0,20);
         polygons.add(polygonImpl);
+        PolygonImpl polygonImp11 = ((PolygonImpl) polygons.get(0)).flipOx();
+        polygons.add(polygonImp11);
         PolygonImpl polygonImpl2 = ((PolygonImpl) polygons.get(0)).flipOx().move(0, 40);
         polygons.add(polygonImpl2);
-        PolygonImpl polygonImpl3 = ((PolygonImpl) polygons.get(0)).flipOy().move(50, 0);
-        polygons.add(polygonImpl3);
-        PolygonImpl polygonImpl4 = ((PolygonImpl) polygons.get(0)).rolatic().move(40, 45);
-        polygons.add(polygonImpl4);
+
+      /*  PolygonImpl polygonImpl3 = ((PolygonImpl) polygons.get(0)).flipOy().move(50, 0);
+        polygons.add(polygonImpl3);*/
+       /* PolygonImpl polygonImpl4 = ((PolygonImpl) polygons.get(0)).rolatic().move(40, 45);
+        polygons.add(polygonImpl4);*/
         drawPolyPanel.setPolygons(polygons);
         drawPolyPanel.displayPolygons(5);
 

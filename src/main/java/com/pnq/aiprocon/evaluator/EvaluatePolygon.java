@@ -69,7 +69,8 @@ public class EvaluatePolygon {
         //tinh diem theo goc
         //neu 2 goc xap xi bang nhau thi se cong 50 diem,
         //con lai se tinh theo cong thuc mark = 50 * (goc nho/ goc lon)
-        if((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2])<=360 ){
+        if((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2])<=360
+                && checkDe(polygon1, polygon2) == false ){
             if((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
                     ||(polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <=360){
                 mark += 50;
@@ -81,7 +82,7 @@ public class EvaluatePolygon {
                 }
             }
             // tinh diem theo canh
-            if(flip == 1 || flip ==2 || flip== 3){
+            if(flip == 0 || flip == 1 || flip ==2 || flip== 3){
                 if(pos1 == 0 && pos2 != 0 ){
                     if(polygon1.getEdges()[pos1] >=  polygon2.getEdges()[pos2-1]){
                         mark +=25 * (polygon2.getEdges()[pos2-1] / polygon1.getEdges()[pos1]);
@@ -185,10 +186,16 @@ public class EvaluatePolygon {
             }
 
         } else {
-            // todo: hai hinh de nhau
+             mark = 0;
         }
 
         return mark;
+    }
+
+    public boolean checkDe(PolygonImpl polygon1, PolygonImpl polygon2){
+        boolean result = false;
+        // todo [Phuong] viet ham check de cua 2 polygon.
+        return result;
     }
 
 }

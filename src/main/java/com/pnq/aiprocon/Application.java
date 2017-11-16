@@ -24,10 +24,12 @@ public class Application {
         }*/
 
         EvaluatePolygon helper = new EvaluatePolygon();
-        double a =  helper.generateMark((PolygonImpl) polygons.get(0), 1, (PolygonImpl) polygons.get(1) , 3, 1);
+        /*double a =  helper.generateMark((PolygonImpl) polygons.get(0), 0, (PolygonImpl) polygons.get(1) , 3, 4);
         System.out.println(a);
-        System.out.println(((PolygonImpl) polygons.get(0)).getEdges().length);
+        System.out.println(((PolygonImpl) polygons.get(0)).getEdges().length);*/
+        PolygonImpl polygonImp11 = ((PolygonImpl) polygons.get(0)).flipOx();
 
+        polygons.add(polygonImp11);
 
     }
 }
