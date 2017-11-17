@@ -18,11 +18,9 @@ public class PolygonHelper {
         double cosVertice = Math.abs((p1p2.x * p3p2.x) + (p1p2.y * p3p2.y)) / (Math.hypot(p1p2.x, p1p2.y) * Math.hypot(p3p2.x, p3p2.y));
 
 
-
         Polygon polygon = new Polygon();
         for (Point p : points) {
-            if (!equals(p, p2))
-            {
+            if (!equals(p, p2)) {
                 polygon.addPoint(p.x, p.y);
             }
         }
