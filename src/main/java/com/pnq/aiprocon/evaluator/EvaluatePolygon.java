@@ -7,7 +7,11 @@ import com.pnq.aiprocon.model.PolygonImpl;
 import com.pnq.aiprocon.render.DrawPolyPanel;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EvaluatePolygon {
@@ -159,7 +163,7 @@ public class EvaluatePolygon {
                         mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2]);
                     }
 
-                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[polygon2.getEdges().length]) {
+                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[polygon2.getEdges().length - 1]) {
                         mark += 25 * (polygon2.getEdges()[polygon2.getEdges().length - 1] / polygon1.getEdges()[polygon1.getEdges().length - 1]);
                     } else {
                         mark += 25 * (polygon1.getEdges()[polygon1.getEdges().length - 1] / polygon2.getEdges()[polygon2.getEdges().length - 1]);
@@ -202,6 +206,8 @@ public class EvaluatePolygon {
     // khong de : tra ve false
     public boolean checkDe(PolygonImpl polygon1, PolygonImpl polygon2) {
         // todo [Phuong] viet ham check de cua 2 polygon.
+
+
         for (int i = 0; i < polygon1.npoints; i++) {
             for (int j = 0; j < polygon2.npoints; j++) {
 
@@ -214,7 +220,13 @@ public class EvaluatePolygon {
                 Point point2_1 = new Point(polygon2.xpoints[j], polygon2.ypoints[j]);
                 Point point2_2 = new Point(polygon2.xpoints[j_plus], polygon2.ypoints[j_plus]);
 
-                boolean result_tmp = isDe(point1_1, point1_2, point2_1, point2_2);
+                boolean result_tmp = isDe(polygon1, polygon2, point1_1, point1_2, point2_1, point2_2);
+
+           /*     if (polygon1.contains(new Point2D.Double(point2_1.x, point2_1.y)) ||
+                        polygon2.contains(new Point2D.Double(point1_1.x, point1_1.y))) {
+                    return true;
+                }*/
+
                 if (result_tmp) {
                     // hai doan thang cat nhau tai mot diem khac dau mut --> de
                     return true;
@@ -225,7 +237,8 @@ public class EvaluatePolygon {
     }
 
     // true : hai hinh de len nhau, false hai hinh khong de
-    private boolean isDe(Point point1_1, Point point1_2, Point point2_1, Point point2_2) {
+    // point1_1 , point1_2 : polygon1
+    private boolean isDe(PolygonImpl polygon1, PolygonImpl polygon2, Point point1_1, Point point1_2, Point point2_1, Point point2_2) {
         // neu hai duong thang cat nhau tai mot diem khong phai dau mut thi la de
 
         int x_ba = point1_2.x - point1_1.x;
@@ -235,12 +248,37 @@ public class EvaluatePolygon {
         int y_dc = point2_2.y - point2_1.y;
 
 
-        if (x_ba * y_dc == y_ba * x_dc) {
-            return false;
-        }
-
         Line2D line_1 = new Line2D.Double(point1_1, point1_2);
         Line2D line_2 = new Line2D.Double(point2_1, point2_2);
+
+        if (x_ba * y_dc == y_ba * x_dc) {
+            // return false;
+            // xet xem diem co nam trong da giac hay khong
+            boolean result = false;
+            if (polygon1.contains(point2_1)) {
+                if (!isOnEdges(polygon1, point2_1)) {
+                    result = true;
+                }
+            }
+            if (polygon1.contains(point2_2)) {
+                if (!isOnEdges(polygon1, point2_2)) {
+                    result = true;
+                }
+            }
+            if (polygon2.contains(point1_1)) {
+                if (!isOnEdges(polygon2, point1_1)) {
+                    result = true;
+                }
+
+            }
+            if (polygon2.contains(point1_2)) {
+                if (!isOnEdges(polygon2, point1_2)) {
+                    result = true;
+                }
+            }
+            return result;
+
+        }
 
         if (line_1.intersectsLine(line_2)) {
             // phuong trinh duong thang thu nhat
@@ -267,8 +305,46 @@ public class EvaluatePolygon {
         }
     }
 
+    // true : diem nam tren canh
+    // false : diem khong nam tren canh
+    public boolean isOnEdges(PolygonImpl polygon, Point point) {
+        for (int i = 0; i < polygon.npoints; i++) {
+            int i_plus = i + 1;
+            if (i == polygon.npoints - 1) {
+                i_plus = 0;
+            }
+
+            Point point1 = new Point(polygon.xpoints[i], polygon.ypoints[i]); // (b)
+            Point point2 = new Point(polygon.xpoints[i_plus], polygon.ypoints[i_plus]); // (c)
+            // (a) point
+            int x1 = point1.x - point.x;
+            int y1 = point1.y - point.y;
+            int x2 = point2.x - point.x;
+            int y2 = point2.y - point.y;
+            if (x1 * x2 + y1 * y2 <= 0) {
+                // diem nam trong
+                // xet xem diem co nam trong duong thang khong
+                // phuong trinh duong thang giua hai diem
+                if ((point2.x - point1.x) * (point.y - point1.y) - (point2.y - point1.y) * (point.x - point1.x) == 0) {
+                    // diem thuoc canh
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
 
     public static void main(String[] args) {
+
+      /*  int x_points[] = new int[]{1, 3, 3};
+        int y_points[] = new int[]{1, 3, 1};
+        EvaluatePolygon evaluatePolygon = new EvaluatePolygon();
+        PolygonImpl polygon = new PolygonImpl(x_points, y_points, 3);
+        System.out.println(evaluatePolygon.isOnEdges(polygon, new Point(2, 3)));*/
+
+
         ReadFileHelper readFileHelper = new ReadFileHelper();
         EvaluatePolygon evaluatePolygon = new EvaluatePolygon();
         String filePath = "/home/javis/Desktop/procon.txt";
@@ -276,12 +352,44 @@ public class EvaluatePolygon {
         List polygons = readFileHelper.readFile(filePath);
 
 
-
-        System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
-
-
+        //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
+        double mark = Double.MIN_VALUE;
+        EvaluateObject evaluateObject = null;
+        int pos = 11;
+        int tmp = -1;
+        for (int i = 0; i < polygons.size() - 1; i++) {
+            if (i != pos) {
+                EvaluateObject abc = evaluatePolygon.execEvaluate((PolygonImpl) polygons.get(pos), (PolygonImpl) polygons.get(i));
+                if (abc.getMark() > mark) {
+                    evaluateObject = abc;
+                    mark = abc.getMark();
+                    tmp = i;
+                }
+            }
+        }
+        System.out.println(tmp);
+        System.out.println(evaluatePolygon.checkDe(evaluateObject.getPolygon1(), evaluateObject.getPolygon2()));
+        System.out.println(evaluateObject.getMark());
         DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
-        drawPolyPanel.setPolygons(polygons.subList(4,6));
+        List po = new ArrayList();
+
+        po.add(evaluateObject.getPolygon1());
+        po.add(evaluateObject.getPolygon2());
+
+        System.out.println("/////");
+        for (int i = 0; i < evaluateObject.getPolygon1().npoints; i++) {
+            System.out.println(evaluateObject.getPolygon1().xpoints[i] + " : " + evaluateObject.getPolygon1().ypoints[i]);
+        }
+        System.out.println("/////");
+        for (int i = 0; i < evaluateObject.getPolygon2().npoints; i++) {
+            System.out.println(evaluateObject.getPolygon2().xpoints[i] + " : " + evaluateObject.getPolygon2().ypoints[i]);
+        }
+        System.out.println("/////");
+
+        System.out.println(evaluatePolygon.checkDe(evaluateObject.getPolygon1(), evaluateObject.getPolygon2()));
+        System.out.println(evaluateObject.getMark());
+
+        drawPolyPanel.setPolygons(po);
         drawPolyPanel.displayPolygons(5);
     }
 
