@@ -186,7 +186,7 @@ public class EvaluatePolygon {
             }
 
         } else {
-             mark = 0;
+             mark = -1;
         }
 
         return mark;
