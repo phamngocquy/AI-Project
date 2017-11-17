@@ -159,7 +159,7 @@ public class EvaluatePolygon {
                         mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2]);
                     }
 
-                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[polygon2.getEdges().length]) {
+                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[polygon2.getEdges().length - 1]) {
                         mark += 25 * (polygon2.getEdges()[polygon2.getEdges().length - 1] / polygon1.getEdges()[polygon1.getEdges().length - 1]);
                     } else {
                         mark += 25 * (polygon1.getEdges()[polygon1.getEdges().length - 1] / polygon2.getEdges()[polygon2.getEdges().length - 1]);
@@ -276,12 +276,11 @@ public class EvaluatePolygon {
         List polygons = readFileHelper.readFile(filePath);
 
 
-
-        System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
-
+        //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
+        System.out.println(evaluatePolygon.execEvaluate((PolygonImpl) polygons.get(1), (PolygonImpl) polygons.get(2)).getMark());
 
         DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
-        drawPolyPanel.setPolygons(polygons.subList(4,6));
+        drawPolyPanel.setPolygons(polygons.subList(1, 3));
         drawPolyPanel.displayPolygons(5);
     }
 
