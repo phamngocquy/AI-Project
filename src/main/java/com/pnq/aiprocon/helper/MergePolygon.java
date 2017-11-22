@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.spi.LocaleServiceProvider;
 
-public class MergeHelper {
+public class MergePolygon{
 
     /**
      * @param p1
