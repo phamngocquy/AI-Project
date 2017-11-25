@@ -51,7 +51,7 @@ public class EvaluatePolygon {
         evaluateObject.setVertex2(pos2);
 
         // xoay thu tu 1 - 7 lan, tra ve hinh da ghep
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 0; i <= 7; i++) {
             // polygon thu 2 sau khi da ghep
             PolygonImpl polygon = MergePolygon.mapP2toP1(polygon1, pos1, polygon2, pos2, i);
 
@@ -251,6 +251,67 @@ public class EvaluatePolygon {
         Line2D line_1 = new Line2D.Double(point1_1, point1_2);
         Line2D line_2 = new Line2D.Double(point2_1, point2_2);
 
+
+        boolean result = false;
+        if (polygon1.contains(point2_1)) {
+            if (!isOnEdges(polygon1, point2_1)) {
+                result = true;
+            }
+        }
+        if (polygon1.contains(point2_2)) {
+            if (!isOnEdges(polygon1, point2_2)) {
+                result = true;
+            }
+        }
+        if (polygon2.contains(point1_1)) {
+            if (!isOnEdges(polygon2, point1_1)) {
+                result = true;
+            }
+
+        }
+        if (polygon2.contains(point1_2)) {
+            if (!isOnEdges(polygon2, point1_2)) {
+                result = true;
+            }
+        }
+        //return result;
+
+        if (result == false) {
+            // khong co diem nao nam trong da giac
+            if (x_ba * y_dc == y_ba * x_dc) {
+
+            }
+
+            if (line_1.intersectsLine(line_2)) {
+                // phuong trinh duong thang thu nhat
+                if (x_ba * (point2_1.y - point1_1.y) - y_ba * (point2_1.x - point1_1.x) == 0) {
+                    // dau mut nam tren duong thang
+                    return false;
+                }
+                if (x_ba * (point2_2.y - point1_1.y) - y_ba * (point2_2.x - point1_1.x) == 0) {
+                    // dau mut nam tren duong thang
+                    return false;
+                }
+
+                if (x_dc * (point1_1.y - point2_1.y) - y_dc * (point1_1.x - point2_1.x) == 0) {
+                    // dau mut nam tren duong thang
+                    return false;
+                }
+                if (x_dc * (point1_2.y - point2_1.y) - y_dc * (point1_2.x - point2_1.x) == 0) {
+                    // dau mut nam tren duong thang
+                    return false;
+                }
+                //    return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+
+
+
+
+/*
         if (x_ba * y_dc == y_ba * x_dc) {
             // return false;
             // xet xem diem co nam trong da giac hay khong
@@ -302,7 +363,7 @@ public class EvaluatePolygon {
             return true;
         } else {
             return false;
-        }
+        }*/
     }
 
     // true : diem nam tren canh
