@@ -7,16 +7,12 @@ import com.pnq.aiprocon.model.PolygonImpl;
 import com.pnq.aiprocon.render.DrawPolyPanel;
 
 import java.awt.*;
-import java.awt.geom.Area;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class EvaluatePolygon {
-
-    public EvaluateObject execEvaluate(PolygonImpl polygon1, PolygonImpl polygon2) {
+public class EvaluatePolygon2 {
+    public EvaluateObject execEvaluate2(PolygonImpl polygon1, PolygonImpl polygon2) {
 
         EvaluateObject evaluateObject = new EvaluateObject();
         evaluateObject.setMark(Double.MIN_VALUE);
@@ -82,7 +78,7 @@ public class EvaluatePolygon {
         if ((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2]) <= 360
                 && checkDe(polygon1, polygon2) == false) {
             if ((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
-                    ||(polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <= 360) {
+                    && (polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <= 360) {
                 mark += 50;
                 if(polygon1.getVertices()[pos1] == 90 || polygon1.getVertices()[pos1] == 270){
                     mark -= 10;
@@ -410,30 +406,31 @@ public class EvaluatePolygon {
 
 
         ReadFileHelper readFileHelper = new ReadFileHelper();
-        EvaluatePolygon evaluatePolygon = new EvaluatePolygon();
+        EvaluatePolygon2 evaluatePolygon = new EvaluatePolygon2();
         String filePath = "C:\\Users\\Capricorn.uet\\Desktop\\input.txt";
 
-        List polygons = readFileHelper.readFile(filePath);
+        java.util.List polygons = readFileHelper.readFile(filePath);
 
 
         //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
-        double mark = Double.MIN_VALUE;
-        EvaluateObject evaluateObject = null;
-        int pos = 11;
+       // double mark = Double.MIN_VALUE;
+        EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(1), (PolygonImpl) polygons.get(13));
+        /*int pos = 11;
         int tmp = -1;
         for (int i = 0; i < polygons.size() - 1; i++) {
             if (i != pos) {
-                EvaluateObject abc = evaluatePolygon.execEvaluate((PolygonImpl) polygons.get(pos), (PolygonImpl) polygons.get(i));
+                EvaluateObject abc = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(pos), (PolygonImpl) polygons.get(i));
                 if (abc.getMark() > mark) {
                     evaluateObject = abc;
                     mark = abc.getMark();
                     tmp = i;
                 }
             }
-        }
-        System.out.println(tmp);
-        System.out.println(evaluatePolygon.checkDe(evaluateObject.getPolygon1(), evaluateObject.getPolygon2()));
-        System.out.println(evaluateObject.getMark());
+        }*/
+       // System.out.println(tmp);
+
+        //System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(0), (PolygonImpl) polygons.get(1)));
+     // System.out.println(evaluateObject.getMark());
         DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
         List po = new ArrayList();
 
