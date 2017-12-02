@@ -80,7 +80,7 @@ public class EvaluatePolygon2 {
             if ((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
                     && (polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <= 360) {
                 mark += 50;
-                if(polygon1.getVertices()[pos1] == 90 || polygon1.getVertices()[pos1] == 270){
+                if (polygon1.getVertices()[pos1] == 90 || polygon1.getVertices()[pos1] == 270) {
                     mark -= 10;
                 }
             } else {
@@ -281,6 +281,37 @@ public class EvaluatePolygon2 {
 
             }
 
+            // //
+            // xet diem trung binh cua canh
+            // something wrong
+            Point point_1 = new Point((point1_1.x + point1_2.x) / 2, (point1_1.y + point1_2.y) / 2);
+
+            if (polygon2.contains(point_1)) {
+                if (!isOnEdges(polygon2, point_1)) {
+
+                    // diem nam trong polygon --> de
+
+                    return true;
+
+                }
+            }
+
+            Point point_2 = new Point((point2_1.x + point2_2.x) / 2, (point2_1.y + point2_2.y) / 2);
+
+            if (polygon1.contains(point_2)) {
+                if (!isOnEdges(polygon1, point_2)) {
+
+                    // diem nam trong polygon --> de
+
+                    return true;
+
+                }
+            }
+
+
+            /////
+
+
             if (line_1.intersectsLine(line_2)) {
                 // phuong trinh duong thang thu nhat
                 if (x_ba * (point2_1.y - point1_1.y) - y_ba * (point2_1.x - point1_1.x) == 0) {
@@ -300,6 +331,8 @@ public class EvaluatePolygon2 {
                     // dau mut nam tren duong thang
                     return false;
                 }
+
+
                 //    return true;
             } else {
                 return false;
@@ -407,13 +440,13 @@ public class EvaluatePolygon2 {
 
         ReadFileHelper readFileHelper = new ReadFileHelper();
         EvaluatePolygon2 evaluatePolygon = new EvaluatePolygon2();
-        String filePath = "C:\\Users\\Capricorn.uet\\Desktop\\input.txt";
+        String filePath = "/home/javis/Desktop/input.txt";
 
         java.util.List polygons = readFileHelper.readFile(filePath);
 
 
         //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
-       // double mark = Double.MIN_VALUE;
+        // double mark = Double.MIN_VALUE;
         EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(1), (PolygonImpl) polygons.get(13));
         /*int pos = 11;
         int tmp = -1;
@@ -427,10 +460,10 @@ public class EvaluatePolygon2 {
                 }
             }
         }*/
-       // System.out.println(tmp);
+        // System.out.println(tmp);
 
         //System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(0), (PolygonImpl) polygons.get(1)));
-     // System.out.println(evaluateObject.getMark());
+        // System.out.println(evaluateObject.getMark());
         DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
         List po = new ArrayList();
 
@@ -452,6 +485,13 @@ public class EvaluatePolygon2 {
 
         drawPolyPanel.setPolygons(po);
         drawPolyPanel.displayPolygons(5);
+
+
+        PolygonImpl polygon1 = new PolygonImpl( new int[]{85,85,76,76,50,50},new int[]{30,37,37,33,33,30},6);
+        PolygonImpl polygon2 = new PolygonImpl( new int[]{78,94,94,103,103,78,78,85,85,78},new int[]{53,53,36,36,30,30,37,37,43,43},10);
+
+        EvaluatePolygon2 evaluatePolygon2 = new EvaluatePolygon2();
+        System.out.println(evaluatePolygon2.checkDe(polygon1,polygon2));
     }
 
 }
