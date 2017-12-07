@@ -76,7 +76,7 @@ public class EvaluatePolygon2 {
         //neu 2 goc xap xi bang nhau thi se cong 50 diem,
         //con lai se tinh theo cong thuc mark = 50 * (goc nho/ goc lon)
         if ((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2]) <= 360
-                && checkDe(polygon1, polygon2) == false) {
+                && checkDe(polygon1, polygon2) == false && checkEdgesCoincident(polygon1, polygon2) == false ) {
             if ((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
                     && (polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <= 360) {
                 mark += 50;
@@ -201,6 +201,13 @@ public class EvaluatePolygon2 {
         return mark;
     }
 
+    //neu khong co 2 cạnh trung thì trả về false
+    // neu co : tra ve true
+    public boolean checkEdgesCoincident(PolygonImpl polygon1, PolygonImpl polygon2){
+        boolean result = true;
+        //todo: Phương viết hàm check 2 cạnh trùng nhau.
+        return result;
+    }
     // neu de : tra ve true;
     // khong de : tra ve false
     public boolean checkDe(PolygonImpl polygon1, PolygonImpl polygon2) {
@@ -440,14 +447,14 @@ public class EvaluatePolygon2 {
 
         ReadFileHelper readFileHelper = new ReadFileHelper();
         EvaluatePolygon2 evaluatePolygon = new EvaluatePolygon2();
-        String filePath = "/home/javis/Desktop/input.txt";
+        String filePath = "C:\\Users\\Capricorn.uet\\Desktop\\input.txt";
 
         java.util.List polygons = readFileHelper.readFile(filePath);
 
 
         //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
         // double mark = Double.MIN_VALUE;
-        EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(1), (PolygonImpl) polygons.get(13));
+        EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(1), (PolygonImpl) polygons.get(14));
         /*int pos = 11;
         int tmp = -1;
         for (int i = 0; i < polygons.size() - 1; i++) {
