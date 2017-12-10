@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 public class EvaluatePolygon3 {
+    // is 90:true : chi con goc 90 do
     public EvaluateObject execEvaluate2(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, PolygonPos posList
             , boolean is90) {
 
@@ -49,13 +50,8 @@ public class EvaluatePolygon3 {
             if (tmpBoolean && ((polygon2.getVertices()[j] < restVertices + 1 && polygon2.getVertices()[j] + 1 > restVertices)
                     || (polygon2.getVertices()[j] < restVertices / 2 + 1))) {
                 // tinh diem phu hop cua goc i va j
-                EvaluateObject object;
-                if (!is90) {
-                    object = caculateMark2Vertices(polygon1, pos1, polygon2, j);
-                } else {
-                    // neu con toan goc vuong thi dung ham tinh diem nay
-                    object = caculateMark2Vertices90(polygon1, pos1, polygon2, j);
-                }
+                EvaluateObject object = caculateMark2Vertices(polygon1, pos1, polygon2, j, is90);
+
 
                 if (object.getMark() > evaluateObject.getMark()) {
                     evaluateObject = object;
@@ -71,10 +67,7 @@ public class EvaluatePolygon3 {
         return evaluateObject;
     }
 
-    private EvaluateObject caculateMark2Vertices90(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int j) {
-        // todo [Nam] ham danh gia khi chi con goc vuong
-        return null;
-    }
+
 //
 //    boolean test = false;
 //    public EvaluateObject execEvaluate2(PolygonImpl polygon1, int pos1, PolygonImpl polygon2) {
@@ -102,7 +95,7 @@ public class EvaluatePolygon3 {
 
 
     // hinh 2 ghep vao hinh 1
-    private EvaluateObject caculateMark2Vertices(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2) {
+    private EvaluateObject caculateMark2Vertices(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2, boolean is90) {
         EvaluateObject evaluateObject = new EvaluateObject();
 
         evaluateObject.setMark(-100);
@@ -117,7 +110,14 @@ public class EvaluatePolygon3 {
 
             // tinh diem cua hinh1,goc pos1, voi hinh2(moi),goc pos2
             // hai hinh da duoc ghep
-            double mark = generateMark(polygon1, pos1, polygon, pos2, i);
+            double mark;
+            if (is90){
+                // chi con goc 90 do
+                mark = generateMark90(polygon1, pos1, polygon, pos2, i);
+            }else {
+                mark = generateMark(polygon1, pos1, polygon, pos2, i);
+            }
+
 
 
             // lay diem lon nhat, tra ve so lan quay
@@ -128,6 +128,13 @@ public class EvaluatePolygon3 {
             }
         }
         return evaluateObject;
+    }
+
+    private double generateMark90(PolygonImpl polygon1, int pos1, PolygonImpl polygon, int pos2, int i) {
+        // pos1 : vi tri goc duoc ghep cua polygon 1
+        // pos2 :  vi tri goc duoc ghep cua polygon 2
+        // todo [Namdv] ham tinh diem khi chi con cac goc 90 do
+        return 0;
     }
 
     public double generateMark(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2, int flip) {
