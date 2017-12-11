@@ -19,7 +19,7 @@ public class EvaluatePolygon {
     public EvaluateObject execEvaluate(PolygonImpl polygon1, PolygonImpl polygon2) {
 
         EvaluateObject evaluateObject = new EvaluateObject();
-        evaluateObject.setMark(Double.MIN_VALUE);
+        evaluateObject.setMark(-100);
 
 
         for (int i = 0; i < polygon1.xpoints.length; i++) {
@@ -45,7 +45,7 @@ public class EvaluatePolygon {
     private EvaluateObject caculateMark2Vertices(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2) {
         EvaluateObject evaluateObject = new EvaluateObject();
 
-        evaluateObject.setMark(Double.MIN_VALUE);
+        evaluateObject.setMark(-100);
         evaluateObject.setPolygon1(polygon1);
         evaluateObject.setVertex1(pos1);
         evaluateObject.setVertex2(pos2);
@@ -417,7 +417,7 @@ public class EvaluatePolygon {
 
 
         //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
-        double mark = Double.MIN_VALUE;
+        double mark = -100;
         EvaluateObject evaluateObject = null;
         int pos = 11;
         int tmp = -1;

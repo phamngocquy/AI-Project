@@ -15,7 +15,7 @@ public class EvaluatePolygon2 {
     public EvaluateObject execEvaluate2(PolygonImpl polygon1, PolygonImpl polygon2) {
 
         EvaluateObject evaluateObject = new EvaluateObject();
-        evaluateObject.setMark(Double.MIN_VALUE);
+        evaluateObject.setMark(-100);
 
 
         for (int i = 0; i < polygon1.xpoints.length; i++) {
@@ -41,7 +41,7 @@ public class EvaluatePolygon2 {
     private EvaluateObject caculateMark2Vertices(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2) {
         EvaluateObject evaluateObject = new EvaluateObject();
 
-        evaluateObject.setMark(Double.MIN_VALUE);
+        evaluateObject.setMark(-100);
         evaluateObject.setPolygon1(polygon1);
         evaluateObject.setVertex1(pos1);
         evaluateObject.setVertex2(pos2);
@@ -76,7 +76,7 @@ public class EvaluatePolygon2 {
         //neu 2 goc xap xi bang nhau thi se cong 50 diem,
         //con lai se tinh theo cong thuc mark = 50 * (goc nho/ goc lon)
         if ((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2]) <= 360
-                && checkDe(polygon1, polygon2) == false && checkEdgesCoincident(polygon1, polygon2) == false ) {
+                && checkDe(polygon1, polygon2) == false  && checkEdgesCoincident(polygon1, polygon2) == true) {
             if ((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
                     && (polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <= 360) {
                 mark += 50;
@@ -201,11 +201,11 @@ public class EvaluatePolygon2 {
         return mark;
     }
 
-    //neu khong co 2 cạnh trung thì trả về false
+    //neu khong co 2 cạnh trung thi tra ve false
     // neu co : tra ve true
     public boolean checkEdgesCoincident(PolygonImpl polygon1, PolygonImpl polygon2){
         boolean result = true;
-        //todo: Phương viết hàm check 2 cạnh trùng nhau.
+        //todo: Phương viet ham check 2 canh trung nhau.
         return result;
     }
     // neu de : tra ve true;
@@ -453,8 +453,8 @@ public class EvaluatePolygon2 {
 
 
         //  System.out.println(evaluatePolygon.checkDe((PolygonImpl) polygons.get(4), (PolygonImpl) polygons.get(5)));
-        // double mark = Double.MIN_VALUE;
-        EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(1), (PolygonImpl) polygons.get(14));
+        // double mark = -100;
+        EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(6), (PolygonImpl) polygons.get(10));
         /*int pos = 11;
         int tmp = -1;
         for (int i = 0; i < polygons.size() - 1; i++) {
@@ -494,11 +494,11 @@ public class EvaluatePolygon2 {
         drawPolyPanel.displayPolygons(5);
 
 
-        PolygonImpl polygon1 = new PolygonImpl( new int[]{85,85,76,76,50,50},new int[]{30,37,37,33,33,30},6);
+      /*  PolygonImpl polygon1 = new PolygonImpl( new int[]{85,85,76,76,50,50},new int[]{30,37,37,33,33,30},6);
         PolygonImpl polygon2 = new PolygonImpl( new int[]{78,94,94,103,103,78,78,85,85,78},new int[]{53,53,36,36,30,30,37,37,43,43},10);
 
         EvaluatePolygon2 evaluatePolygon2 = new EvaluatePolygon2();
-        System.out.println(evaluatePolygon2.checkDe(polygon1,polygon2));
+        System.out.println(evaluatePolygon2.checkDe(polygon1,polygon2));*/
     }
 
 }
