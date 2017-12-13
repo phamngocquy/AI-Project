@@ -1,12 +1,16 @@
 package com.pnq.aiprocon.evaluator;
 
 import com.pnq.aiprocon.helper.MergePolygon;
+import com.pnq.aiprocon.helper.ReadFileHelper;
 import com.pnq.aiprocon.model.EvaluateObject;
 import com.pnq.aiprocon.model.PolygonImpl;
 import com.pnq.aiprocon.model.PolygonPos;
+import com.pnq.aiprocon.render.DrawPolyPanel;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EvaluatePolygon3 {
     // is 90:true : chi con goc 90 do
@@ -130,11 +134,165 @@ public class EvaluatePolygon3 {
         return evaluateObject;
     }
 
-    private double generateMark90(PolygonImpl polygon1, int pos1, PolygonImpl polygon, int pos2, int i) {
+    private double generateMark90(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2, int flip) {
         // pos1 : vi tri goc duoc ghep cua polygon 1
         // pos2 :  vi tri goc duoc ghep cua polygon 2
         // todo [Namdv] ham tinh diem khi chi con cac goc 90 do
-        return 0;
+        int a = 3;
+        double mark = 0;
+        if((polygon1.getVertices()[pos1] + polygon2.getVertices()[pos2]) <= 360 &&
+                checkDe(polygon1, polygon2) == false){
+            if ((polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) >= 359
+                    && (polygon2.getVertices()[pos2] + polygon1.getVertices()[pos1]) <= 360) {
+                mark += 25;
+                }
+             else {
+                if (polygon1.getVertices()[pos1] == 90 || polygon2.getVertices()[pos2] == 90) {
+                    mark += 20;
+                }
+            }
+
+            if (flip == 0 || flip == 1 || flip == 2 || flip == 3) {
+                if (pos1 == 0 && pos2 != 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2 - 1]) {
+                        mark += 25 * (polygon2.getEdges()[pos2 - 1] / polygon1.getEdges()[pos1])
+                                + a *polygon1.getEdges()[pos1]  ;
+
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2 - 1])
+                                + a *  polygon2.getEdges()[pos2 - 1];
+                    }
+
+                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[polygon1.getEdges().length - 1])
+                                + a * polygon1.getEdges()[polygon1.getEdges().length - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[polygon1.getEdges().length - 1] / polygon2.getEdges()[pos2])
+                                + a*  polygon2.getEdges()[pos2];
+                    }
+                } else if (pos1 == 0 && pos2 == 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[polygon2.getEdges().length - 1]) {
+                        mark += 25 * (polygon2.getEdges()[polygon2.getEdges().length - 1] / polygon1.getEdges()[pos1])
+                                + a * polygon1.getEdges()[pos1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[polygon2.getEdges().length - 1])
+                                + a * polygon2.getEdges()[polygon2.getEdges().length - 1];
+                    }
+
+                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[polygon1.getEdges().length - 1])
+                                + a * polygon1.getEdges()[polygon1.getEdges().length - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[polygon1.getEdges().length - 1] / polygon2.getEdges()[pos2])
+                                + a *  polygon2.getEdges()[pos2];
+                    }
+                } else if (pos1 != 0 && pos2 == 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[polygon2.getEdges().length - 1]) {
+                        mark += 25 * (polygon2.getEdges()[polygon2.getEdges().length - 1] / polygon1.getEdges()[pos1])
+                                + a * polygon1.getEdges()[pos1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[polygon2.getEdges().length - 1])
+                                + a*  polygon2.getEdges()[polygon2.getEdges().length - 1] ;
+                    }
+
+                    if (polygon1.getEdges()[pos1 - 1] >= polygon2.getEdges()[pos2])  {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1 - 1])
+                                + a* polygon1.getEdges()[pos1 - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1 - 1] / polygon2.getEdges()[pos2])
+                                + a * polygon2.getEdges()[pos2];
+                    }
+                } else if (pos1 != 0 && pos2 != 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2 - 1]) {
+                        mark += 25 * (polygon2.getEdges()[pos2 - 1] / polygon1.getEdges()[pos1])
+                                + a* polygon1.getEdges()[pos1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2 - 1])
+                                + a * polygon2.getEdges()[pos2 - 1];
+                    }
+
+                    if (polygon1.getEdges()[pos1 - 1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1 - 1])
+                                + a * polygon1.getEdges()[pos1 - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1 - 1] / polygon2.getEdges()[pos2])
+                                + a *  polygon2.getEdges()[pos2];
+                    }
+
+                }
+            } else if (flip == 4 || flip == 5 || flip == 6 || flip == 7) {
+                if (pos1 == 0 && pos2 != 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1])
+                                + a *  polygon1.getEdges()[pos1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2])
+                                + a * polygon2.getEdges()[pos2];
+                    }
+
+                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[pos2 - 1]) {
+                        mark += 25 * (polygon2.getEdges()[pos2 - 1] / polygon1.getEdges()[polygon1.getEdges().length - 1])
+                                + a* polygon1.getEdges()[polygon1.getEdges().length - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[polygon1.getEdges().length - 1] / polygon2.getEdges()[pos2 - 1])
+                                + a * polygon2.getEdges()[pos2 - 1];
+                    }
+                } else if (pos1 == 0 && pos2 == 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1])
+                                + a *  polygon1.getEdges()[pos1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2])
+                                + a* polygon2.getEdges()[pos2];
+                    }
+
+                    if (polygon1.getEdges()[polygon1.getEdges().length - 1] >= polygon2.getEdges()[polygon2.getEdges().length - 1]) {
+                        mark += 25 * (polygon2.getEdges()[polygon2.getEdges().length - 1] / polygon1.getEdges()[polygon1.getEdges().length - 1])
+                                + a* polygon1.getEdges()[polygon1.getEdges().length - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[polygon1.getEdges().length - 1] / polygon2.getEdges()[polygon2.getEdges().length - 1])
+                                + a * polygon2.getEdges()[polygon2.getEdges().length - 1];
+                    }
+                } else if (pos1 != 0 && pos2 == 0) {
+                    if (polygon1.getEdges()[pos1 - 1] >= polygon2.getEdges()[polygon2.getEdges().length - 1]) {
+                        mark += 25 * (polygon2.getEdges()[polygon2.getEdges().length - 1] / polygon1.getEdges()[pos1 - 1])
+                                + a* polygon1.getEdges()[pos1 - 1] ;
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1 - 1] / polygon2.getEdges()[polygon2.getEdges().length - 1])
+                                + a* polygon2.getEdges()[polygon2.getEdges().length - 1];
+                    }
+
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1])
+                                + a* polygon1.getEdges()[pos1] ;
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2])
+                                + a  *polygon2.getEdges()[pos2];
+                    }
+                } else if (pos1 != 0 && pos2 != 0) {
+                    if (polygon1.getEdges()[pos1] >= polygon2.getEdges()[pos2]) {
+                        mark += 25 * (polygon2.getEdges()[pos2] / polygon1.getEdges()[pos1])
+                                + a * polygon1.getEdges()[pos1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1] / polygon2.getEdges()[pos2])
+                                + a* polygon2.getEdges()[pos2] ;
+                    }
+
+                    if (polygon1.getEdges()[pos1 - 1] >= polygon2.getEdges()[pos2 - 1]) {
+                        mark += 25 * (polygon2.getEdges()[pos2 - 1] / polygon1.getEdges()[pos1 - 1])
+                                + a * polygon1.getEdges()[pos1 - 1];
+                    } else {
+                        mark += 25 * (polygon1.getEdges()[pos1 - 1] / polygon2.getEdges()[pos2 - 1]
+                                + a * polygon2.getEdges()[pos2 - 1]);
+                    }
+                }
+            }
+
+        } else {
+            mark = 0;
+        }
+
+        return mark;
     }
 
     public double generateMark(PolygonImpl polygon1, int pos1, PolygonImpl polygon2, int pos2, int flip) {
@@ -531,8 +689,36 @@ public class EvaluatePolygon3 {
     }
 
     public static void main(String[] args) {
+        ReadFileHelper readFileHelper = new ReadFileHelper();
+        EvaluatePolygon3 evaluatePolygon = new EvaluatePolygon3();
+        String filePath = "C:\\Users\\Capricorn.uet\\Desktop\\input.txt";
+        PolygonPos polygonPos = new PolygonPos();
+        boolean is90 = false;
 
+        java.util.List polygons = readFileHelper.readFile(filePath);
+        EvaluateObject evaluateObject = evaluatePolygon.execEvaluate2((PolygonImpl) polygons.get(0), 1,  (PolygonImpl) polygons.get(10), polygonPos, is90  );
 
+        DrawPolyPanel drawPolyPanel = new DrawPolyPanel();
+        List po = new ArrayList();
+
+        po.add(evaluateObject.getPolygon1());
+        po.add(evaluateObject.getPolygon2());
+
+        System.out.println("/////");
+        for (int i = 0; i < evaluateObject.getPolygon1().npoints; i++) {
+            System.out.println(evaluateObject.getPolygon1().xpoints[i] + " : " + evaluateObject.getPolygon1().ypoints[i]);
+        }
+        System.out.println("/////");
+        for (int i = 0; i < evaluateObject.getPolygon2().npoints; i++) {
+            System.out.println(evaluateObject.getPolygon2().xpoints[i] + " : " + evaluateObject.getPolygon2().ypoints[i]);
+        }
+        System.out.println("/////");
+
+        System.out.println(evaluatePolygon.checkDe(evaluateObject.getPolygon1(), evaluateObject.getPolygon2()));
+        System.out.println(evaluateObject.getMark());
+
+        drawPolyPanel.setPolygons(po);
+        drawPolyPanel.displayPolygons(5);
     }
 
 }

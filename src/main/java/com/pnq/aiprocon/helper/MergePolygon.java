@@ -227,7 +227,7 @@ public class MergePolygon {
         // PolygonImpl polygon = new PolygonImpl(new int[] {10, 30, 30, 20, 20, 30, 30, 50, 50, 10}, new int[] {50, 50, 40 , 40 , 30 , 30 , 20 , 20 , 10 , 10}, 10);
         List polygon_tmp = new ArrayList();
         int tmp = 11;
-        double mark = Double.MIN_VALUE;
+        double mark = -1;
         PolygonImpl polygon1 = (PolygonImpl) polygons.get(tmp);
         int pos = -1;
         for (int i = 0; i < polygons.size(); i++) {
@@ -258,7 +258,7 @@ public class MergePolygon {
         // PolygonImpl polygon = new PolygonImpl(new int[] {10, 30, 30, 20, 20, 30, 30, 50, 50, 10}, new int[] {50, 50, 40 , 40 , 30 , 30 , 20 , 20 , 10 , 10}, 10);
         ArrayList polygon_tmp = new ArrayList();
         int tmp = 11;
-        double mark = Double.MIN_VALUE;
+        double mark = -1;
         PolygonImpl polygon1 = (PolygonImpl) polygons.get(tmp);
         int pos = -1;
         PolygonImpl polygon_new = null;
